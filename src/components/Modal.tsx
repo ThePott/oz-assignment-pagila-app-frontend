@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import type { FilmComment, RequestInfoGroup } from "../interfaces"
 import { useFilmStore } from "../store"
 import RoundedBox from "./RoundedBox"
@@ -39,13 +39,33 @@ const LikeButton = (props: LikeButtonProps) => {
 }
 
 const CommentBox = React.memo(({ filmComment }: { filmComment: FilmComment }) => {
+    const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+    const [isEditing, setIsEditing] = useState<boolean>(false)
     const setRequestInfo = useFilmStore((state) => state.setRequestInfo)
     const deleteComment = useFilmStore((state) => state.deleteFilmComment)
     const customer_id = useFilmStore((state) => state.customer_id)
+    const putFilmComment = useFilmStore((state) => state.putFilmComment)
 
     const isMine = customer_id === filmComment.customer_id
-    
-    const handleClick = () => {
+
+    const handleEdit = () => {
+        const wasEditing = isEditing
+        setIsEditing((prev) => !prev)
+
+        if (!wasEditing) { return }
+
+        const textareaValue = textareaRef.current?.value
+        if (!textareaValue) { return }
+        const newFilmComment = { ...filmComment, content: textareaValue }
+        putFilmComment(newFilmComment)
+        setRequestInfo({
+            additionalUrl: `/film-post/comment/${filmComment.comment_id}`,
+            method: "PUT",
+            body: newFilmComment
+        })
+    }
+    const handleDelete = () => {
         setRequestInfo({
             additionalUrl: `/film-post/comment/${filmComment.comment_id}`,
             method: "DELETE"
@@ -59,7 +79,9 @@ const CommentBox = React.memo(({ filmComment }: { filmComment: FilmComment }) =>
                 <p>{filmComment.content}</p>
                 <p>{JSON.stringify(filmComment.created_at)}</p>
             </div>
-            {isMine && <RoundedBox onClick={handleClick}>삭제</RoundedBox>}
+            {isEditing && <textarea ref={textareaRef} defaultValue={filmComment.content} />}
+            {isMine && <RoundedBox onClick={handleEdit}>수정</RoundedBox>}
+            {isMine && <RoundedBox onClick={handleDelete}>삭제</RoundedBox>}
         </div>
     )
 })

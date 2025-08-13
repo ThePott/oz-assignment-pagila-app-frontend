@@ -86,6 +86,7 @@ export interface FilmState {
     setFilmCommentArray: (filmCommentArray: FilmComment[]) => void
     addFilmComment: (filmComment: FilmComment) => void
     deleteFilmComment: (filmComment: FilmComment) => void
+    putFilmComment: (filmComment: FilmComment) => void
 
     likeCount: number
     privateToApiSetLikeCount: (likeCount: number) => void

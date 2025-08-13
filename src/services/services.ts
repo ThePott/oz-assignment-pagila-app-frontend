@@ -21,7 +21,8 @@ export const requestThenResponse = async (
                 const responsePost = await axiosFilm.post(requestInfo.additionalUrl, requestInfo.body)
                 break
             case "PUT":
-                const responsePut = await axiosFilm.put(requestInfo.additionalUrl)
+                debugger
+                const responsePut = await axiosFilm.put(requestInfo.additionalUrl, requestInfo.body)
                 break
             case "DELETE":
                 const responseDelete = await axiosFilm.delete(requestInfo.additionalUrl)
