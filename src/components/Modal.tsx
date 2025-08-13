@@ -1,8 +1,7 @@
-import { useEffect } from "react"
-import { useFilmStore } from "../store"
-import { useStoreResponse } from "../hooks"
-import RoundedBox from "./RoundedBox"
+import React, { useEffect } from "react"
 import type { FilmComment, RequestInfoGroup } from "../interfaces"
+import { useFilmStore } from "../store"
+import RoundedBox from "./RoundedBox"
 
 interface AdditionalProps {
     likeCount: number
@@ -12,18 +11,19 @@ interface AdditionalProps {
 type LikeButtonProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> & AdditionalProps
 
 const LikeButton = (props: LikeButtonProps) => {
+    const setRequestInfo = useFilmStore((state) => state.setRequestInfo)
+    const filmPost = useFilmStore((state) => state.filmPost)
+    const customer_id = useFilmStore((state) => state.customer_id)
+    const toggleDoILikeIt = useFilmStore((state) => state.toggleDoILikeIt)
+
     const { likeCount, doILikeIt, ...rest } = props
     const baseClassName = "transition py-1 px-3 rounded-full border-1 border-black/0"
     const conditionalClassName = doILikeIt ? "text-white bg-black" : "border-black/100"
     const className = `${baseClassName} ${conditionalClassName}`
-    const setRequestInfo = useFilmStore((state) => state.setRequestInfo)
-    const filmPost = useFilmStore((state) => state.filmPost)
-    const customer_id = useFilmStore((state) => state.customer_id)
 
     const handleClick = () => {
         if (!filmPost) { throw new Error("CANNOT CLICK WHEN NO FILM POST") }
-        console.log({ doILikeIt })
-        debugger
+
         const requestInfo: RequestInfoGroup = {
             additionalUrl: `/film-post/${filmPost.post_id}/like/customer/${customer_id}`,
             method: "POST",
@@ -31,7 +31,7 @@ const LikeButton = (props: LikeButtonProps) => {
         }
 
         setRequestInfo(requestInfo)
-
+        toggleDoILikeIt()
     }
     return (
         <div onClick={handleClick} className={className} {...rest}>{`Like(${likeCount})`}</div>
@@ -48,26 +48,26 @@ const CommentBox = ({ filmComment }: { filmComment: FilmComment }) => {
     )
 }
 
-const Modal = () => {
+const Modal = React.memo(() => {
     const selectedFilm = useFilmStore((state) => state.selectedFilm)
-    const clearSelectedFilm = useFilmStore((state) => state.clearSelectedFilm)
-    const setRequestInfo = useFilmStore((state) => state.setRequestInfo)
     const filmPost = useFilmStore((state) => state.filmPost)
     const filmCommentArray = useFilmStore((state) => state.filmCommentArray)
     const likeCount = useFilmStore((state) => state.likeCount)
     const doILikeIt = useFilmStore((state) => state.doILikeIt)
-
     const customer_id = useFilmStore((state) => state.customer_id)
     const setPostWhat = useFilmStore((state) => state.setPostWhat)
-
-    useStoreResponse()
+    const addFilmComment = useFilmStore((state) => state.addFilmComment)
+    
+    const clearSelectedFilm = useFilmStore((state) => state.clearSelectedFilm)
+    const setRequestInfo = useFilmStore((state) => state.setRequestInfo)
 
     useEffect(() => {
-        if (!selectedFilm) { return }
+        if (!selectedFilm) {
+            throw new Error("MODAL SHOULD NOT BE RENDERED WITHOUT SELECTED FILM")
+        }
+        console.log("---- fetch when mount")
         setRequestInfo({ additionalUrl: `/${selectedFilm.film_id}/film-post/customer/1`, method: "GET" })
     }, [selectedFilm])
-
-    if (!selectedFilm) { return null }
 
     const handleSubmit = (event: React.MouseEvent<HTMLFormElement, MouseEvent>) => {
         event.preventDefault()
@@ -85,13 +85,21 @@ const Modal = () => {
         } as FilmComment
 
         setPostWhat(comment)
+        console.log("---- submitted!")
         setRequestInfo({
             additionalUrl: `/film-post/${filmPost.film_id}/comment`,
             method: "POST",
             body: comment
         })
-    }
+        addFilmComment(comment)
 
+        target.comment_content.value = ""
+    }
+    
+    if (!selectedFilm) {
+        throw new Error("MODAL SHOULD NOT BE RENDERED WITHOUT SELECTED FILM")
+    }
+    console.log("---- modal mounted")
     return (
         <div onClick={clearSelectedFilm} className={`z-10 w-screen h-screen fixed top-0 left-0 backdrop-blur-xs flex justify-center items-center`}>
             <div onClick={(event) => { event.stopPropagation() }} className="max-w-[500px] w-full max-h-[500px] h-full bg-white overflow-x-hidden overflow-y-scroll">
@@ -132,6 +140,6 @@ const Modal = () => {
             </div>
         </div>
     )
-}
+})
 
 export default Modal

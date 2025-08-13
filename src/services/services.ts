@@ -10,7 +10,6 @@ export const requestThenResponse = async (
 ) => {
     try {
         if (!requestInfo) {throw new Error("---- CANNOT REQUEST WITHOUT INFO")}
-        console.log({method: requestInfo.method})
         switch (requestInfo.method) {
             case "GET":
                 
@@ -30,7 +29,6 @@ export const requestThenResponse = async (
             default:
                 throw new Error("---- UN-HANDLED METHOD!")
         }
-
         setRequestInfo(null)
     } catch (error) {
         console.error({ error })

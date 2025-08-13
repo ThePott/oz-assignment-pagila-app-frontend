@@ -29,7 +29,9 @@ export const useStoreResponse = () => {
     const { storePostResponse } = useStorePostResponse()
 
     useEffect(() => {
-        if (requestInfo === null) { return }
+        if (requestInfo === null) { 
+            return 
+        }
 
         const additionalUrl = requestInfo.additionalUrl
 
