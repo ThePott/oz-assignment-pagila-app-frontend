@@ -29,10 +29,7 @@ export const useFilmStore = create<FilmState>()((set) => ({
     filmCommentArray: [],
     setFilmCommentArray(filmCommentArray) { set({ filmCommentArray }) },
     addFilmComment(filmComment) {
-        set((state) => {
-            const filmCommentArray = state.filmCommentArray.map((el) => el.comment_id === filmComment.comment_id ? filmComment : el)
-            return { filmCommentArray }
-        })
+        set((state) => ({ filmCommentArray: [filmComment, ...state.filmCommentArray] }))
     },
 
     likeCount: 0,
