@@ -74,12 +74,14 @@ const CommentBox = React.memo(({ filmComment }: { filmComment: FilmComment }) =>
     }
     return (
         <div className="m-3 p-3 rounded-xl border-1 border-amber-600 flex gap-3">
-            <div className="grow">
-                <p>{`customer id: ${filmComment.customer_id}`}</p>
-                <p>{filmComment.content}</p>
-                <p>{JSON.stringify(filmComment.created_at)}</p>
-            </div>
-            {isEditing && <textarea ref={textareaRef} defaultValue={filmComment.content} />}
+            {!isEditing &&
+                <div className="grow">
+                    <p>{`customer id: ${filmComment.customer_id}`}</p>
+                    <p>{filmComment.content}</p>
+                    <p>{JSON.stringify(filmComment.created_at)}</p>
+                </div>
+            }
+            {isEditing && <textarea ref={textareaRef} defaultValue={filmComment.content} className="grow border-1 border-amber-600" />}
             {isMine && <RoundedBox onClick={handleEdit}>수정</RoundedBox>}
             {isMine && <RoundedBox onClick={handleDelete}>삭제</RoundedBox>}
         </div>
