@@ -69,8 +69,19 @@ export interface FilmState {
 
     selectedFilm: Film | null
     setSelectedFilm: (selectedFilm: Film | null) => void
+    clearSelectedFilm: () => void
 
     filmPost: FilmPost | null
-    setFilmPost: (filmPost: FilmPost) => void
+    setFilmPost: (filmPost: FilmPost | null) => void
+
+    filmCommentArray: FilmComment[]
+    setFilmCommentArray: (filmCommentArray: FilmComment[]) => void
+
+    likeCount: number
+    privateToApiSetLikeCount: (likeCount: number) => void
+
+    doILikeIt: boolean
+    setDoILikeIt: (doILikeIt: boolean) => void
+    toggleDoILikeIt: () => void
 }
 

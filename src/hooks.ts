@@ -13,9 +13,9 @@ export const useStoreResponse = () => {
         
         if (additionalUrl === "/") {
             getAndStore(additionalUrl, setAdditionalUrl, setFilmArray);
-        } else if (/^\/\d+\/film-post$/.test(additionalUrl)) {
-            debugger
-            getAndStore(additionalUrl, setAdditionalUrl, setFilmPost)
+        } else if (/^\/\d+\/film-post\/customer\/\d+$/.test(additionalUrl)) {
+            const justLog = (thing: any) => console.log(thing)
+            getAndStore(additionalUrl, setAdditionalUrl, justLog)
 
         } else {
             throw new Error("---- NOT HANDLED ADDITIONAL URL");

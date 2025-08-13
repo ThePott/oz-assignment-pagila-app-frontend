@@ -13,18 +13,19 @@ const ModalContent = () => {
 
 const Modal = () => {
     const selectedFilm = useFilmStore((state) => state.selectedFilm)
-    const setSelectedFilm = useFilmStore((state) => state.setSelectedFilm)
+    // const setSelectedFilm = useFilmStore((state) => state.setSelectedFilm)
+    const clearSelectedFilm = useFilmStore((state) => state.clearSelectedFilm)
     const setAdditionalUrl = useFilmStore((state) => state.setAdditionalUrl)
 
     useStoreResponse()
 
     useEffect(() => {
         if (!selectedFilm) { return }
-        setAdditionalUrl(`/${selectedFilm.film_id}/film-post`)
+        setAdditionalUrl(`/${selectedFilm.film_id}/film-post/customer/1`)
     }, [selectedFilm])
 
     return (
-        <div onClick={() => setSelectedFilm(null)} className={`${!selectedFilm && "hidden"} z-10 w-screen h-screen fixed top-0 left-0 backdrop-blur-xs flex justify-center items-center`}>
+        <div onClick={clearSelectedFilm} className={`${!selectedFilm && "hidden"} z-10 w-screen h-screen fixed top-0 left-0 backdrop-blur-xs flex justify-center items-center`}>
             <ModalContent />
         </div>
     )
