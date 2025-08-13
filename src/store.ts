@@ -4,11 +4,13 @@ import type { FilmState } from "./interfaces";
 
 
 export const useFilmStore = create<FilmState>()((set) => ({
+    customer_id: 1,
+
     filmArray: [],
     setFilmArray(filmArray) { set({ filmArray }) },
 
-    additionalUrl: "/",
-    setAdditionalUrl(additionalUrl) { set({ additionalUrl }) },
+    requestInfo: { additionalUrl: "/", method: "GET" },
+    setRequestInfo(requestInfo) { set({ requestInfo }) },
 
     selectedFilm: null,
     setSelectedFilm(selectedFilm) { set({ selectedFilm }) },
@@ -41,4 +43,6 @@ export const useFilmStore = create<FilmState>()((set) => ({
         })
     },
 
+    postWhat: null,
+    setPostWhat(postWhat) { set({ postWhat }) },
 }))

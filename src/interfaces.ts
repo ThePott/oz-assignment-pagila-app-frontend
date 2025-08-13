@@ -58,14 +58,22 @@ export interface FilmComment {
     updated_at: Date;
 }
 
-export type RequestWhat = 'getAllFilms' | 'getOneFilm'
+export type RequestMethod = "GET" | "POST" | "PUT" | "DELETE"
+
+export interface RequestInfoGroup {
+    additionalUrl: string
+    method: RequestMethod
+    body?: any
+}
 
 export interface FilmState {
+    customer_id: number
+
     filmArray: Film[]
     setFilmArray: (filmArray: Film[]) => void
 
-    additionalUrl: string | null
-    setAdditionalUrl: (additionalUrl: string | null) => void
+    requestInfo: RequestInfoGroup | null
+    setRequestInfo: (requestInfo: RequestInfoGroup | null) => void
 
     selectedFilm: Film | null
     setSelectedFilm: (selectedFilm: Film | null) => void
@@ -83,5 +91,8 @@ export interface FilmState {
     doILikeIt: boolean
     setDoILikeIt: (doILikeIt: boolean) => void
     toggleDoILikeIt: () => void
+
+    postWhat: any
+    setPostWhat: (postWhat: any) => void
 }
 

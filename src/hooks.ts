@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react"
 import { useFilmStore } from "./store"
-import { getAndStore } from "./services/services"
+import { requestThenResponse } from "./services/services"
 import type { FilmComment, FilmPost } from "./interfaces"
 
 const useStorePostResponse = () => {
@@ -20,22 +20,35 @@ const useStorePostResponse = () => {
 }
 
 export const useStoreResponse = () => {
-    const additionalUrl = useFilmStore((state) => state.additionalUrl)
-    const setAdditionalUrl = useFilmStore((state) => state.setAdditionalUrl)
+    // const additionalUrl = useFilmStore((state) => state.additionalUrl)
+    // const setAdditionalUrl = useFilmStore((state) => state.setAdditionalUrl)
+    const requestInfo = useFilmStore((state) => state.requestInfo)
+    const setRequestInfo = useFilmStore((state) => state.setRequestInfo)
+
     const setFilmArray = useFilmStore((state) => state.setFilmArray)
     const { storePostResponse } = useStorePostResponse()
 
     useEffect(() => {
-        if (additionalUrl === null) { return }
+        if (requestInfo === null) { return }
 
-        if (additionalUrl === "/") {
-            getAndStore(additionalUrl, setAdditionalUrl, setFilmArray);
+        const additionalUrl = requestInfo.additionalUrl
+
+        if (requestInfo.additionalUrl === "/") {
+            /** get all films  */
+            requestThenResponse(requestInfo, setRequestInfo, setFilmArray);
+
         } else if (/^\/\d+\/film-post\/customer\/\d+$/.test(additionalUrl)) {
-            getAndStore(additionalUrl, setAdditionalUrl, storePostResponse)
+            /** get post related info  */
+            requestThenResponse(requestInfo, setRequestInfo, storePostResponse)
+
+        } else if (/^\/film-post\/\d+\/comment$/.test(additionalUrl)) {
+            /** post comment  */
+            requestThenResponse(requestInfo, setRequestInfo)
 
         } else {
             throw new Error("---- NOT HANDLED ADDITIONAL URL");
         }
 
-    }, [additionalUrl])
+    }, [requestInfo])
+
 }
