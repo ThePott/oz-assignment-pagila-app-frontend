@@ -1,8 +1,9 @@
+import React from "react"
 import type { Film } from "../interfaces"
 import { useFilmStore } from "../store"
 import RoundedBox from "./RoundedBox"
 
-const FilmBox = ({ film }: { film: Film }) => {
+const FilmBox = React.memo(({ film }: { film: Film }) => {
   const setSelectedFilm = useFilmStore((state) => state.setSelectedFilm)
   const handleClick = () => {
     setSelectedFilm(film)
@@ -13,6 +14,6 @@ const FilmBox = ({ film }: { film: Film }) => {
       <p>{film.description}</p>
     </RoundedBox>
   )
-}
+})
 
 export default FilmBox

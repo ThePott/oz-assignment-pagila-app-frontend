@@ -38,15 +38,21 @@ const LikeButton = (props: LikeButtonProps) => {
     )
 }
 
-const CommentBox = ({ filmComment }: { filmComment: FilmComment }) => {
+const CommentBox = React.memo(({ filmComment }: { filmComment: FilmComment }) => {
+    const handleClick = () => {
+        console.log("---- clicked")
+    }
     return (
-        <RoundedBox>
-            <p>{`customer id: ${filmComment.customer_id}`}</p>
-            <p>{filmComment.content}</p>
-            <p>{JSON.stringify(filmComment.created_at)}</p>
-        </RoundedBox>
+        <div className="m-3 p-3 rounded-xl border-1 border-amber-600 flex gap-3">
+            <div className="grow">
+                <p>{`customer id: ${filmComment.customer_id}`}</p>
+                <p>{filmComment.content}</p>
+                <p>{JSON.stringify(filmComment.created_at)}</p>
+            </div>
+            <RoundedBox onClick={handleClick}>삭제</RoundedBox>
+        </div>
     )
-}
+})
 
 const Modal = React.memo(() => {
     const selectedFilm = useFilmStore((state) => state.selectedFilm)
@@ -57,7 +63,7 @@ const Modal = React.memo(() => {
     const customer_id = useFilmStore((state) => state.customer_id)
     const setPostWhat = useFilmStore((state) => state.setPostWhat)
     const addFilmComment = useFilmStore((state) => state.addFilmComment)
-    
+
     const clearSelectedFilm = useFilmStore((state) => state.clearSelectedFilm)
     const setRequestInfo = useFilmStore((state) => state.setRequestInfo)
 
@@ -95,7 +101,7 @@ const Modal = React.memo(() => {
 
         target.comment_content.value = ""
     }
-    
+
     if (!selectedFilm) {
         throw new Error("MODAL SHOULD NOT BE RENDERED WITHOUT SELECTED FILM")
     }
