@@ -31,6 +31,12 @@ export const useFilmStore = create<FilmState>()((set) => ({
     addFilmComment(filmComment) {
         set((state) => ({ filmCommentArray: [filmComment, ...state.filmCommentArray] }))
     },
+    deleteFilmComment(filmComment) {
+        set((state) => {
+            const filmCommentArray = state.filmCommentArray.filter((el) => el.comment_id !== filmComment.comment_id)
+            return { filmCommentArray }
+        })
+    },
 
     likeCount: 0,
     privateToApiSetLikeCount(likeCount) { set({ likeCount }) },

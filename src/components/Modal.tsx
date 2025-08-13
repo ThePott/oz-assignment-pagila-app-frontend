@@ -39,8 +39,15 @@ const LikeButton = (props: LikeButtonProps) => {
 }
 
 const CommentBox = React.memo(({ filmComment }: { filmComment: FilmComment }) => {
+    const setRequestInfo = useFilmStore((state) => state.setRequestInfo)
+    const deleteComment = useFilmStore((state) => state.deleteFilmComment)
+
     const handleClick = () => {
-        console.log("---- clicked")
+        setRequestInfo({
+            additionalUrl: `/film-post/comment/${filmComment.comment_id}`,
+            method: "DELETE"
+        })
+        deleteComment(filmComment)
     }
     return (
         <div className="m-3 p-3 rounded-xl border-1 border-amber-600 flex gap-3">
