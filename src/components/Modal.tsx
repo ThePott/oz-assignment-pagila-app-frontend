@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useFilmStore } from "../store"
 import { useStoreResponse } from "../hooks"
 import RoundedBox from "./RoundedBox"
-import type { FilmComment } from "../interfaces"
+import type { FilmComment, RequestInfoGroup } from "../interfaces"
 
 interface AdditionalProps {
     likeCount: number
@@ -16,9 +16,22 @@ const LikeButton = (props: LikeButtonProps) => {
     const baseClassName = "transition py-1 px-3 rounded-full border-1 border-black/0"
     const conditionalClassName = doILikeIt ? "text-white bg-black" : "border-black/100"
     const className = `${baseClassName} ${conditionalClassName}`
+    const setRequestInfo = useFilmStore((state) => state.setRequestInfo)
+    const filmPost = useFilmStore((state) => state.filmPost)
+    const customer_id = useFilmStore((state) => state.customer_id)
 
     const handleClick = () => {
-        console.log("---- clicked")
+        if (!filmPost) { throw new Error("CANNOT CLICK WHEN NO FILM POST") }
+        console.log({ doILikeIt })
+        debugger
+        const requestInfo: RequestInfoGroup = {
+            additionalUrl: `/film-post/${filmPost.post_id}/like/customer/${customer_id}`,
+            method: "POST",
+            body: { doLike: !doILikeIt }
+        }
+
+        setRequestInfo(requestInfo)
+
     }
     return (
         <div onClick={handleClick} className={className} {...rest}>{`Like(${likeCount})`}</div>

@@ -41,12 +41,16 @@ export const useStoreResponse = () => {
             /** get post related info  */
             requestThenResponse(requestInfo, setRequestInfo, storePostResponse)
 
-        } else if (/^\/film-post\/\d+\/comment$/.test(additionalUrl)) {
-            /** post comment  */
-            requestThenResponse(requestInfo, setRequestInfo)
+        // } else if (/^\/film-post\/\d+\/comment$/.test(additionalUrl)) {
+        //     /** post comment  */
+        //     requestThenResponse(requestInfo, setRequestInfo)
 
+        // } else if (/^\/film-post\/\d+\/like\/customer\/\d+$/.test(additionalUrl)) {
+        //     /** post like change */
         } else {
-            throw new Error("---- NOT HANDLED ADDITIONAL URL");
+            console.log({additionalUrl})
+            requestThenResponse(requestInfo, setRequestInfo)
+            // throw new Error("---- NOT HANDLED ADDITIONAL URL");
         }
 
     }, [requestInfo])
