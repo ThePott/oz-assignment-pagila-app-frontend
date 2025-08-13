@@ -1,9 +1,11 @@
 import type { Film } from "../interfaces"
+import { useFilmStore } from "../store"
 import RoundedBox from "./RoundedBox"
 
 const FilmBox = ({ film }: { film: Film }) => {
+  const setSelectedFilm = useFilmStore((state) => state.setSelectedFilm)
   const handleClick = () => {
-    console.log({clicked: film.film_id})
+    setSelectedFilm(film)
   }
   return (
     <RoundedBox onClick={handleClick}>

@@ -10,4 +10,7 @@ export const useFilmStore = create<FilmState>()((set) => ({
     additionalUrl: "/",
     setAdditionalUrl(additionalUrl) { set({ additionalUrl }) },
 
+    selectedFilm: null,
+    setSelectedFilm(selectedFilm) { set({ selectedFilm }) },
+
 }))

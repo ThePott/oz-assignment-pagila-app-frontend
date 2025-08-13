@@ -66,5 +66,8 @@ export interface FilmState {
 
     additionalUrl: string | null
     setAdditionalUrl: (additionalUrl: string | null) => void
+
+    selectedFilm: Film | null
+    setSelectedFilm: (selectedFilm: Film | null) => void
 }
 
