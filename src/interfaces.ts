@@ -57,3 +57,14 @@ export interface FilmComment {
     created_at: Date;
     updated_at: Date;
 }
+
+export type RequestWhat = 'getAllFilms' | 'getOneFilm'
+
+export interface FilmState {
+    filmArray: Film[]
+    setFilmArray: (filmArray: Film[]) => void
+
+    additionalUrl: string | null
+    setAdditionalUrl: (additionalUrl: string | null) => void
+}
+

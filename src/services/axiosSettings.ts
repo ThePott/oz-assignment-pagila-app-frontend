@@ -1,3 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:3939"
+export const axiosFilm = axios.create({
+    baseURL: "http://localhost:3939/film"
+})
+

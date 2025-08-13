@@ -1,9 +1,11 @@
+import type { Film } from "../interfaces"
 import RoundedBox from "./RoundedBox"
 
-const FilmBox = ({ film }: { film: any }) => {
+const FilmBox = ({ film }: { film: Film }) => {
   return (
     <RoundedBox>
-      {JSON.stringify(film)}
+      <p className="text-2xl font-semibold">{`${film.title} (${film.release_year})`}</p>
+      <p>{film.description}</p>
     </RoundedBox>
   )
 }

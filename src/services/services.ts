@@ -1,9 +1,18 @@
-import axios from "axios"
+import { axiosFilm } from "./axiosSettings"
 
-const getAllFilms = async () => {
-    const response = await axios.get("")
-    const filmArray = response.data
-    return filmArray
+export const getAndStore = async (
+    additionalUrl: string,
+    setAdditionalUrl: (additionalUrl: string | null) => void,
+    storeFunction: any
+) => {
+    try {
+        const response = await axiosFilm.get(additionalUrl)
+        const result = response.data
+        storeFunction(result)
+        setAdditionalUrl(null)
+        console.log({result})
+    } catch (error) {
+        console.error({error})
+    }
 }
 
-// const 
