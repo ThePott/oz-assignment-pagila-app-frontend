@@ -41,7 +41,10 @@ const LikeButton = (props: LikeButtonProps) => {
 const CommentBox = React.memo(({ filmComment }: { filmComment: FilmComment }) => {
     const setRequestInfo = useFilmStore((state) => state.setRequestInfo)
     const deleteComment = useFilmStore((state) => state.deleteFilmComment)
+    const customer_id = useFilmStore((state) => state.customer_id)
 
+    const isMine = customer_id === filmComment.customer_id
+    
     const handleClick = () => {
         setRequestInfo({
             additionalUrl: `/film-post/comment/${filmComment.comment_id}`,
@@ -56,7 +59,7 @@ const CommentBox = React.memo(({ filmComment }: { filmComment: FilmComment }) =>
                 <p>{filmComment.content}</p>
                 <p>{JSON.stringify(filmComment.created_at)}</p>
             </div>
-            <RoundedBox onClick={handleClick}>삭제</RoundedBox>
+            {isMine && <RoundedBox onClick={handleClick}>삭제</RoundedBox>}
         </div>
     )
 })
