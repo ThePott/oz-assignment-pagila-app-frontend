@@ -6,6 +6,8 @@ export const getAndStore = async (
     storeFunction: any
 ) => {
     try {
+        debugger
+        console.log({additionalUrl})
         const response = await axiosFilm.get(additionalUrl)
         const result = response.data
         storeFunction(result)

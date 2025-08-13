@@ -13,4 +13,7 @@ export const useFilmStore = create<FilmState>()((set) => ({
     selectedFilm: null,
     setSelectedFilm(selectedFilm) { set({ selectedFilm }) },
 
+    filmPost: null,
+    setFilmPost(filmPost) { set({ filmPost }) },
+
 }))

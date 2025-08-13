@@ -6,15 +6,20 @@ export const useStoreResponse = () => {
     const additionalUrl = useFilmStore((state) => state.additionalUrl)
     const setAdditionalUrl = useFilmStore((state) => state.setAdditionalUrl)
     const setFilmArray = useFilmStore((state) => state.setFilmArray)
+    const setFilmPost = useFilmStore((state) => state.setFilmPost)
 
     useEffect(() => {
         if (additionalUrl === null) { return }
-        switch (additionalUrl) {
-            case "/":
-                getAndStore(additionalUrl, setAdditionalUrl, setFilmArray)
-                break
-            default:
-                throw new Error("---- NOT HANDLED ADDITIONAL URL")
+        
+        if (additionalUrl === "/") {
+            getAndStore(additionalUrl, setAdditionalUrl, setFilmArray);
+        } else if (/^\/\d+\/film-post$/.test(additionalUrl)) {
+            debugger
+            getAndStore(additionalUrl, setAdditionalUrl, setFilmPost)
+
+        } else {
+            throw new Error("---- NOT HANDLED ADDITIONAL URL");
         }
+
     }, [additionalUrl])
 }

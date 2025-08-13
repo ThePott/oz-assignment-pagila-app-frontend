@@ -69,5 +69,8 @@ export interface FilmState {
 
     selectedFilm: Film | null
     setSelectedFilm: (selectedFilm: Film | null) => void
+
+    filmPost: FilmPost | null
+    setFilmPost: (filmPost: FilmPost) => void
 }
 
